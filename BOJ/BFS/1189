@@ -1,1 +1,56 @@
 
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static int R, C, K;
+    static char[][] map;
+    static int[][] visited;
+    static int answer;
+
+    static int[] x_m = {-1, 0,1,0};
+    static int[] y_m = {0,1,0,-1};
+
+    public static void main (String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        R = Integer.parseInt(st.nextToken()); //x 값
+        C = Integer.parseInt(st.nextToken()); // y 값
+        K = Integer.parseInt(st.nextToken()); // 가야하는 거리
+        map = new char[R+1][C+1];
+        visited = new int[R+1][C+1];
+
+        for(int i=0; i<R; i++){
+            String s = br.readLine();
+            for(int j=0; j<C; j++){
+                map[i][j] = s.charAt(j);
+            }
+        }
+        visited[R-1][0] = 1; // 현재위치 방문처리
+        dfs(R-1, 0, 1);
+        System.out.println(answer);
+
+    }
+
+    static void dfs(int x, int y, int move){
+        if(x == 0 && y == C-1){
+            if(move == K) answer++;
+            return;
+        }
+
+        for(int i=0; i<4; i++){
+            int new_x = x+ x_m[i];
+            int new_y = y+ y_m[i];
+
+            if(new_x <0 || new_y<0 || new_x>=R || new_y>=C) continue;
+            if(visited[new_x][new_y] == 1 || map[new_x][new_y] =='T' ) continue;
+
+            visited[new_x][new_y] = 1;
+            dfs(new_x, new_y, move+1);
+            visited[new_x][new_y] = 0; // 초기화해야 다음 경우에 수도 찾기 때문
+
+        }
+    }
+
+}
+```
