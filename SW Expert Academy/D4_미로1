@@ -1,1 +1,57 @@
 
+import java.util.*;
+import java.io.*;
+
+public class Solution {
+
+    static int[] mx = { 1, 0, -1, 0 };
+    static int[] my = { 0, 1, 0, -1 };
+    static char[][] miro;
+    static int answer;
+
+
+    public static void main(String[] args) throws IOException {
+        int TC = 10;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        for(int tc=1; tc<=TC; tc++) {
+            br.readLine();
+            miro = new char[16][]; // 미로 초기화
+            for (int i = 0; i < 16; i++) {
+                String s = br.readLine();
+                miro[i] = s.toCharArray();
+            }
+
+            answer = 0;
+            move(1,1);
+            System.out.println("#"+tc+" "+answer);
+        }
+
+    }
+
+    static void move(int x, int y){
+
+        for(int i=0; i<4; ++i){
+            if(answer == 1){
+                return;
+            }
+
+            int new_x = x+ mx[i];
+            int new_y = y+ my[i];
+
+            if(new_x <0 || new_y<0 || new_x>=16 || new_y>=16) continue;
+            if(miro[new_x][new_y] == '1') continue;
+
+            if(miro[new_x][new_y] == '3'){
+                answer =1;
+                return;
+            }
+
+            if(miro[new_x][new_y]=='0'){
+                miro[new_x][new_y] ='1';
+                move(new_x, new_y);
+            }
+
+        }
+    }
+}
