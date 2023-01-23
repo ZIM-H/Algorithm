@@ -1,0 +1,25 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Main {
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int[] z= new int[41];
+		int[] o= new int[41];
+		z[0] = 1;
+		z[1] = 0;
+		o[0] = 0;
+		o[1] = 1;
+		int n = Integer.parseInt(br.readLine());
+		
+		for(int i=0; i<n; i++) {
+			int num = Integer.parseInt(br.readLine());
+			for(int j=2; j<=num; j++) {
+				z[j] = z[j-1] + z[j-2];
+				o[j] = o[j-1] + o[j-2];
+			}
+			System.out.println(z[num]+" "+o[num]);
+		}
+	}
+}
