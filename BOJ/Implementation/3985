@@ -1,0 +1,48 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int l = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine());
+        int[] expect = new int[n+1];
+        int[] cnt = new int[n+1];
+        boolean[] eat = new boolean[l+1];
+
+        for(int i=1; i<=n; i++){
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int p = Integer.parseInt(st.nextToken());
+            int k = Integer.parseInt(st.nextToken());
+            expect[i] = k-p+1;
+            for(int j=p; j<=k; j++){
+                if(eat[j] == false){
+                    eat[j] = true;
+                    cnt[i]+=1;
+                }
+            }
+        }
+        int max1 = 0;
+        int idx1 = 0;
+        for(int i=0; i<expect.length; i++){
+             if(expect[i] > max1){
+                 max1 = expect[i];
+                 idx1 = i;
+             }
+        }
+
+        int max2 = 0;
+        int idx2 = 0;
+        for(int i=0; i<cnt.length; i++){
+            if(cnt[i] > max2){
+                max2 = cnt[i];
+                idx2 = i;
+            }
+        }
+        System.out.println(idx1);
+        System.out.println(idx2);
+    }
+}
