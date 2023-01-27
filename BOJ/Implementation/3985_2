@@ -1,0 +1,46 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int l = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine());
+        Map<Integer, Integer> m1 = new HashMap<>();
+        Map<Integer, Integer> m2 = new HashMap<>();
+
+        boolean[] eat = new boolean[l+1];
+        for(int i=1; i<=n; i++){
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int p = Integer.parseInt(st.nextToken());
+            int k = Integer.parseInt(st.nextToken());
+
+            m1.put(i, k-p+1);
+
+            for(int j=p; j<=k; j++){
+                if(eat[j] == false){
+                    eat[j] = true;
+                    m2.put(i,m2.getOrDefault(i,0)+1);
+                }
+            }
+        }
+
+        for(Map.Entry<Integer, Integer> e : m1.entrySet()){
+            if(e.getValue().equals(Collections.max(m1.values()))){
+                System.out.println(e.getKey());
+                break;
+            }
+        }
+
+        for(Map.Entry<Integer, Integer> e : m2.entrySet()){
+            if(e.getValue().equals(Collections.max(m2.values()))){
+                System.out.println(e.getKey());
+                break;
+            }
+        }
+    }
+}
