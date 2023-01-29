@@ -1,1 +1,48 @@
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        int l = Integer.parseInt(st.nextToken());
+
+        int[] ball = new int[n+1]; // 자리별 공 받은 횟수
+        ball[1] = 1;
+        int cnt = 0; // 공 던지는 횟수
+        int seat = 1; // 공 던지는 사람
+
+        while(true){
+            if(ball[seat]==m) break;
+            // 짝수
+            if(ball[seat] % 2 == 0){
+                if(seat + l > n){
+                    seat = seat +l -n;
+                }
+                else {
+                    seat += l;
+                }
+            }
+            // 홀수
+            else{
+                if(seat - l > 0){
+                    seat -= l;
+                }
+                else {
+                    seat = seat-l+n;
+                }
+            }
+            ball[seat]++; // 옮긴 자리 공 받은 횟수 증가
+            cnt++;
+        }
+
+        System.out.println(cnt);
+    }
+}
