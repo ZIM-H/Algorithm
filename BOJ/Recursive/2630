@@ -1,0 +1,51 @@
+import java.util.Scanner;
+
+public class Main{
+	public static int[][] map;
+    public static int[] result;
+    
+    public static void zone(int r, int c, int div){
+    	if(check(r,c,div)){
+        	if(map[r][c] == 1) result[1]++;
+        	else result[0]++;
+        
+			return;        
+        }
+        int n_div = div/2;
+        
+        zone(r,c,n_div);
+        zone(r+n_div, c, div);
+        zone(r,c+n_div+div);
+        zone(r+n_div, c+n_div, n_div);
+    }
+    
+    public static boolean check(int r, int c, int div){
+    	int first = map[r][c];
+        
+        for(int i=r; i<r+div; i++){
+        	for(int j=c; j<c+div; j++){
+            	if(map[i][j] != first) return false;
+            }    
+        }
+        
+        return true;
+    }
+    
+    public static void main(String[] args){
+    	Scanner sc = new Scanner(System.in);
+        
+        int n = sc.nextInt();
+        map = new int[n][n];
+        result = new int[2];
+        
+        for(int i=0; i<n; i++){
+        	for(int j=0; j<n; j++){
+            	map[i][j] = sc.nextInt();
+            }
+        }
+        
+        zone(0,0,n);
+        
+        System.out.println(result[0]);
+        System.out.println(result[1]);
+}
