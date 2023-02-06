@@ -1,0 +1,59 @@
+
+import java.util.Scanner;
+
+public class Solution {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+
+		for(int tc=1; tc<=10; tc++) {
+			int g = sc.nextInt();
+			int[][] map = new int[100][100];
+			
+			for(int i=0; i<100; i++) {
+				for(int j=0; j<100; j++) {
+					map[i][j] = sc.nextInt();
+				}
+			}
+			
+
+			int start = 0;
+			for(int i=0; i<100; i++) { // 시작점이 1인 경우 찾기 인덱스
+				if(map[0][i] == 1) {
+					int r = 0;
+					int c = i;
+					boolean[][] check = new boolean[100][100];
+					check[r][c] = true;
+					
+					while(true) {
+						if(c+1<100 && map[r][c+1]==1 && check[r][c+1] != true) { // 오른쪽 이동
+							c++;
+						}
+						else if(c-1>=0 && map[r][c-1]==1 && check[r][c-1] != true) { // 왼쪽 이동
+							c--;
+						}
+						else { // 아래 이동
+							r++;
+						}
+						
+						check[r][c] = true;
+						
+						if(r==99) {
+							break;
+						}
+						
+					}
+					
+					if(map[r][c] == 2) { // 최종 도착지
+						start = i;
+					}
+					else
+						continue;
+				}
+			}
+			System.out.println("#"+tc+" "+start);
+		}
+
+	}
+
+}
