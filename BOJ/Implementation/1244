@@ -1,0 +1,61 @@
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int snum = sc.nextInt();
+		int[] state = new int[snum+1];
+		for(int i=1; i<state.length; i++) {
+			state[i] = sc.nextInt();
+		}
+		
+		int stu = sc.nextInt();
+		int[][] sstate = new int[stu][2];
+		
+		for(int i=0; i<stu; i++) {
+			sstate[i][0] = sc.nextInt();
+			sstate[i][1] = sc.nextInt();
+		}
+		
+		for(int i=0; i<stu; i++) {
+			//남학생
+			if(sstate[i][0] == 1) {
+				for(int j=sstate[i][1]; j<state.length; j+=j=sstate[i][1]) {
+					if(state[j] == 1) state[j] = 0;
+					else state[j] = 1;
+				}
+			}
+			
+			//여학생
+			else {
+				int mid = sstate[i][1];
+				if(state[mid] == 1) state[mid]=0;
+				else state[mid]=1;
+				
+				int move = 1;
+				while(true) {
+					if(mid-move>0 && mid+move<state.length && state[mid-move] == state[mid+move]) {
+						if(state[mid-1] == 1) {
+							state[mid-1] = 0;
+							state[mid+1] = 0;
+						}
+						else {
+							state[mid-1] = 1;
+							state[mid+1] = 1;
+						}
+						move++;
+					}
+					else break;
+				}
+			}
+		}
+		
+		for(int i=1; i<state.length; i++) {
+			System.out.print(state[i]+" ");
+		}
+
+	}
+
+}
