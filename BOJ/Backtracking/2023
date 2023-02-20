@@ -1,0 +1,39 @@
+import java.util.Scanner;
+
+public class Main {
+    static StringBuilder sb;
+    static int n;
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        n = sc.nextInt();
+
+        sb = new StringBuilder();
+
+        prime(sb);
+    }
+
+    private static void prime(StringBuilder sb) {
+        if(sb.length() == n){
+            System.out.println(sb);
+            return;
+        }
+
+        for(int i=1; i<=9; i++){
+            sb.append(i);
+            if(isPrime(Integer.parseInt(String.valueOf(sb)))){
+                prime(sb);
+            }
+            sb.deleteCharAt(sb.length()-1);
+        }
+    }
+
+    static boolean isPrime(int num){
+        if(num < 2) return false;
+        for(int i=2; i<=num/2; i++){
+            if(num % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
