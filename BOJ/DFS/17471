@@ -2,13 +2,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
-public class Main_17471_게리맨더링1 {
+public class Main {
 	static int N;
-	static int[] people; // 구역의 인구 정보
-	static boolean[][] adj; // 구역간 인접행렬
+	static int[] people; 
+	static boolean[][] adj;
 
-	static boolean[] select; // 선거구 true & false -> 부분집합
-	static int ans; // 두 선거구의 인구총합 차이
+	static boolean[] select;
+	static int ans; 
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -18,19 +18,19 @@ public class Main_17471_게리맨더링1 {
 		adj = new boolean[N + 1][N + 1];
 		select = new boolean[N + 1];
 
-		for (int i = 1; i <= N; i++) { // 각 지역의 인구수(지역번호 1번부터!!)
+		for (int i = 1; i <= N; i++) { 
 			people[i] = sc.nextInt();
 		}
 
 		for (int i = 1; i <= N; i++) {
-			int tmp = sc.nextInt(); // i번 지역과 인접한 지역의 갯수
+			int tmp = sc.nextInt(); 
 			for (int j = 0; j < tmp; j++) {
 				adj[i][sc.nextInt()] = true;
 			}
 		} // end input
 
 		ans = Integer.MAX_VALUE;
-		powerset(1); // 지역변호 1번부터 true/false 부분집합 기록
+		powerset(1); 
 		System.out.println(ans == Integer.MAX_VALUE ? -1 : ans);
 	}
 
