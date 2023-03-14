@@ -1,0 +1,60 @@
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Queue;
+
+public class Main {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		
+		for(int tc=0; tc<T; tc++) {
+			String str1 = br.readLine();
+			char[] order = str1.toCharArray();
+			
+			int n = Integer.parseInt(br.readLine());
+			String str2 = br.readLine();
+			
+			if(n==0) {
+				System.out.println("error");
+				continue;
+			}
+			String str3 = str2.substring(1, str2.length()-1);
+			String[] num = str3.split(",");
+			
+			int flag = 1;
+			for(int i=0; i<order.length; i++) {
+				if(order[i] == 'R') {
+					String[] tmp = new String[num.length];
+					for(int j=0; j<num.length; j++) {
+						tmp[j] = num[num.length-1-j];
+					}
+					
+					num = tmp;
+				}
+				
+				else {
+					if(num.length != 0) {
+						String[] tmp = new String[num.length-1];
+						for(int j=1; j<num.length; j++) {
+							tmp[j-1] = num[j];
+						}
+						num = tmp;
+					}
+					else {
+						flag = 0;
+						break;
+					}
+				}
+			}
+			
+			if(flag == 0) System.out.println("error");
+			else System.out.println(Arrays.toString(num));
+			
+		}
+		
+	}
+}
