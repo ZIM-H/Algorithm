@@ -1,0 +1,109 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+public class Main {
+	static char[][] map;
+	static int r, c, time, flag;
+	static Pos Go, Bi;
+	static int[] dr = { 0, 0, 1, -1 };
+	static int[] dc = { 1, -1, 0, 0 };
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		r = Integer.parseInt(st.nextToken());
+		c = Integer.parseInt(st.nextToken());
+
+		map = new char[r][c];
+		Go = null;
+		Bi = null;
+		time = Integer.MAX_VALUE;
+		flag = 0;
+
+		for (int i = 0; i < r; i++) {
+			String s = br.readLine();
+			for (int j = 0; j < c; j++) {
+				map[i][j] = s.charAt(j);
+				if (map[i][j] == 'D') {
+					Bi = new Pos(i, j, 0);
+				} else if (map[i][j] == 'S') {
+					Go = new Pos(i, j, 0);
+				}
+			}
+		}
+
+		bfs();
+		if (flag == 1)
+			System.out.println(time);
+		else
+			System.out.println("KAKTUS");
+
+	}
+
+	private static void bfs() {
+		Queue<Pos> q = new ArrayDeque<>();
+		boolean[][] visit = new boolean[r][c];
+		q.add(new Pos(Go.i, Go.j, 0));
+		visit[Go.i][Go.j] = true;
+		map[Go.i][Go.j] = '.';
+
+		while (!q.isEmpty()) {
+			int s = q.size();
+			water();
+			for (int t = 0; t < s; t++) {
+				Pos now = q.poll();
+				if (now.i == Bi.i && now.j == Bi.j) {
+					time = Math.min(time, now.t);
+					flag = 1;
+					break;
+				}
+				for (int d = 0; d < 4; d++) {
+					int nr = now.i + dr[d];
+					int nc = now.j + dc[d];
+					if (nr < r && nc < c && nr >= 0 && nc >= 0 && (map[nr][nc] == '.' || map[nr][nc] == 'D')
+							&& !visit[nr][nc]) {
+						q.add(new Pos(nr, nc, now.t + 1));
+//						System.out.println("추가된 좌표 :"+nr + " "+nc +" 시간"+now.t);
+						visit[nr][nc] = true;
+					}
+				}
+			}
+		}
+
+	}
+
+	private static void water() {
+
+		boolean[][] visited = new boolean[r][c];
+		for (int i = 0; i < r; i++) {
+			for (int j = 0; j < c; j++) {
+				if (map[i][j] == '*' && !visited[i][j]) {
+					visited[i][j] = true;
+					for (int d = 0; d < 4; d++) {
+						int nr = i + dr[d];
+						int nc = j + dc[d];
+						if (nr < r && nc < c && nr >= 0 && nc >= 0 && map[nr][nc] == '.' && !visited[nr][nc]) {
+							map[nr][nc] = '*';
+							visited[nr][nc] = true;
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	static class Pos {
+		int i, j, t;
+
+		public Pos(int i, int j, int t) {
+			this.i = i;
+			this.j = j;
+			this.t = t;
+		}
+	}
+}
