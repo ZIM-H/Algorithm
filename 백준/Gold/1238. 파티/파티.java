@@ -1,23 +1,39 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
+    static class Node implements Comparable<Node>{
+        int n;
+        int v;
+        public Node(int n, int v){
+            this.n = n;
+            this.v = v;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            return (this.v - o.v);
+        }
+    }
+    static ArrayList<Node>[] graph;
+    static int N;
+    static int[][] dis;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
         int X = Integer.parseInt(st.nextToken());
 
-        int[][] value = new int[N+1][N+1];
-        int INF = 10000000;
+        graph = new ArrayList[N+1];
         for(int i=1; i<=N; i++){
-            Arrays.fill(value[i], INF);
-            value[i][i] = 0;
+            graph[i] = new ArrayList<>();
         }
 
         for(int i=0; i<M; i++){
@@ -26,40 +42,45 @@ public class Main {
             int e = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
 
-            value[s][e] = v;
+            graph[s].add(new Node(e, v));
         }
 
-
-//        for(int i=1; i<=N; i++){
-//            for(int j=1; j<=N; j++){
-//                System.out.print(value[i][j] + "           ");
-//            }
-//            System.out.println();
-//        }
-
-        for(int k=1; k<=N; k++){
-            for(int i=1; i<=N; i++){
-                for(int j=1; j<=N; j++){
-                    if(k == i || k == j || i == j) continue;
-                    value[i][j] = Math.min(value[i][j], value[i][k]+ value[k][j]);
-
-                }
-            }
+        dis = new int[N+1][N+1];
+        for(int i=1; i<=N; i++){
+            dij(i);
         }
-
-//        for(int i=1; i<=N; i++){
-//            for(int j=1; j<=N; j++){
-//                System.out.print(value[i][j] + "           ");
-//            }
-//            System.out.println();
-//        }
 
         int max = Integer.MIN_VALUE;
         for(int i=1; i<=N; i++){
-            max = Math.max(max, value[i][X]+value[X][i]);
+            max = Math.max(max, dis[i][X] + dis[X][i]);
         }
 
         System.out.println(max);
 
+    }
+
+    private static void dij(int start) {
+        boolean[] check = new boolean[N+1];
+        Arrays.fill(dis[start], 10000000);
+
+        dis[start][start] = 0;
+
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.offer(new Node(start, 0));
+
+        while (!pq.isEmpty()){
+            Node now = pq.poll();
+
+            if(check[now.n]) continue;
+            check[now.n] = true;
+
+            for(Node next : graph[now.n]){
+                if(dis[start][next.n] > dis[start][now.n] + next.v){
+                    dis[start][next.n] = dis[start][now.n] + next.v;
+
+                    pq.offer(new Node(next.n, dis[start][next.n]));
+                }
+            }
+        }
     }
 }
