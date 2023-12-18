@@ -7,94 +7,80 @@ import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static boolean[] visited;
+    static class Node implements Comparable<Node>{
+        int n;
+        int v;
+        public Node(int n, int v){
+            this.n = n;
+            this.v = v;
+        }
 
+        @Override
+        public int compareTo(Node o) {
+            return (this.v - o.v);
+        }
+    }
+    static ArrayList<Node>[] graph;
+    static int N;
+    static int[][] dis;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        int n, m, x;
         StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-//        도착지 0 부터 시작
-        x = Integer.parseInt(st.nextToken()) - 1;
-        int[][] revAdj = new int[n][n];
-        int[][] adj = new int[n][n];
 
-        for(int i=0; i<n; i++){
-            Arrays.fill(adj[i], 0);
-            Arrays.fill(revAdj[i], 0);
+        N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int X = Integer.parseInt(st.nextToken());
+
+        graph = new ArrayList[N+1];
+        for(int i=1; i<=N; i++){
+            graph[i] = new ArrayList<>();
         }
 
-        int[] costArr = new int[n];
-        int[] retCostArr = new int[n];
-        Arrays.fill(costArr, 987654321);
-        Arrays.fill(retCostArr, 987654321);
-
-
-//        0부터 시작
-        for (int i = 0; i < m; i++) {
+        for(int i=0; i<M; i++){
             st = new StringTokenizer(br.readLine());
-            int start = Integer.parseInt(st.nextToken());
-            int end = Integer.parseInt(st.nextToken());
-            int value = Integer.parseInt(st.nextToken());
-            revAdj[end-1][start-1] = value;
-            adj[start - 1][end - 1] = value;
+            int s = Integer.parseInt(st.nextToken());
+            int e = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+
+            graph[s].add(new Node(e, v));
         }
 
-//        1. x -> n개의 노드로(그래프 뒤집어서)
-        visited = new boolean[n];
-        costArr = dstr(revAdj, costArr, x, n);
-//        2. x -> n개의 노드로(정방향 그래프로
-        visited = new boolean[n];
-        retCostArr = dstr(adj, retCostArr, x, n);
-
-
-        int ans = Integer.MIN_VALUE;
-
-        for(int i=0; i<n; i++){
-            ans = Math.max(ans, costArr[i] + retCostArr[i]);
+        dis = new int[N+1][N+1];
+        for(int i=1; i<=N; i++){
+            dij(i);
         }
-        System.out.println(ans);
+
+        int max = Integer.MIN_VALUE;
+        for(int i=1; i<=N; i++){
+            max = Math.max(max, dis[i][X] + dis[X][i]);
+        }
+
+        System.out.println(max);
+
     }
 
-    static public int[] dstr(int[][] adj, int[] dist, int x, int n){
-        PriorityQueue<Node> ep = new PriorityQueue<>();
+    private static void dij(int start) {
+        boolean[] check = new boolean[N+1];
+        Arrays.fill(dis[start], 10000000);
 
-        ep.offer(new Node(x, 0));
-        dist[x] = 0;
-        while (!ep.isEmpty()){
-            Node current = ep.poll();
-            if(visited[current.nodeNum]){
-                continue;
-            }
-            visited[current.nodeNum] = true;
-            for (int next = 0; next<n; next++){
-                if(adj[current.nodeNum][next] == 0 || next == x){
-                    continue;
+        dis[start][start] = 0;
+
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.offer(new Node(start, 0));
+
+        while (!pq.isEmpty()){
+            Node now = pq.poll();
+
+            if(check[now.n]) continue;
+            check[now.n] = true;
+
+            for(Node next : graph[now.n]){
+                if(dis[start][next.n] > dis[start][now.n] + next.v){
+                    dis[start][next.n] = dis[start][now.n] + next.v;
+
+                    pq.offer(new Node(next.n, dis[start][next.n]));
                 }
-
-//                if(costArr[next] < costArr[current.nodeNum] + adj[current.nodeNum][next])
-//                    System.out.println((current.nodeNum+1) + " " + (next+1) + " " + costArr[current.nodeNum] + " " + adj[current.nodeNum][next]);
-                dist[next] = Math.min(dist[next], dist[current.nodeNum] + adj[current.nodeNum][next]);
-                ep.offer(new Node(next, dist[next]));
             }
-//            System.out.println(current);
-        }
-        return dist;
-    }
-
-    static class Node implements Comparable<Node>{
-
-        int nodeNum;
-        int weight;
-        Node(int n, int w){
-            this.nodeNum = n;
-            this.weight = w;
-        }
-        @Override
-        public int compareTo(Node n){
-            return this.weight - n.weight;
         }
     }
 }
