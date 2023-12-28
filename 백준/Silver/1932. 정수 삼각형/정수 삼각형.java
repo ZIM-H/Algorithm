@@ -25,13 +25,12 @@ public class Main {
             for (int j = 0; j < i + 1; j++) {
                 if (j == 0) {
                     value[i][j] = value[i - 1][j] + arr[i][j];
-                    continue;
                 } else if (i == j) {
                     value[i][j] = value[i - 1][j - 1] + arr[i][j];
-                    continue;
                 }
-
-                value[i][j] = Math.max(value[i - 1][j - 1] + arr[i][j], value[i - 1][j] + arr[i][j]);
+                else{
+                    value[i][j] = Math.max(value[i - 1][j - 1] + arr[i][j], value[i - 1][j] + arr[i][j]);
+                }
             }
         }
 
