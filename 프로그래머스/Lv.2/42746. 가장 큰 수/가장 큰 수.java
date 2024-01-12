@@ -9,13 +9,13 @@ class Solution {
         
         Arrays.sort(nums, new Comparator<String>(){
             public int compare(String o1, String o2){
-                return (o2+o1).compareTo(o1+o2);
+                return (o1+o2).compareTo(o2+o1);
             }
         });
         
-        if(nums[0].equals("0")) return "0";
+        if(nums[nums.length-1].equals("0")) return "0";
         
-        for(int i=0; i<nums.length; i++){
+        for(int i=nums.length-1; i>=0; i--){
             answer += nums[i];
         }
         
