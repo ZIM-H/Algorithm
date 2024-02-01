@@ -3,6 +3,7 @@ class Solution {
     static int answer;
     public int solution(String s) {
         answer = 0;
+        
         char[] ch = s.toCharArray();
         
         for(int i=0; i<ch.length; i++){
