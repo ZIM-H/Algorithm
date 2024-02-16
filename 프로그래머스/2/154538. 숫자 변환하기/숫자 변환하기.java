@@ -17,30 +17,21 @@ class Solution {
         
         PriorityQueue<Num> q = new PriorityQueue<>();
         q.add(new Num(x, 0));
-        int idx = 0;
         boolean[] check = new boolean[1000009];
-        check[x] = true;
         
         while(!q.isEmpty()){
             Num now = q.poll();
+            if(now.n > y || check[now.n]) continue;
+            check[now.n] = true;
             
             if(now.n == y) {
                 answer = now.cnt;    
                 break;
             }
             
-            if(now.n + n <= y && !check[now.n+n]) {
-                q.add(new Num(now.n + n, now.cnt+1));
-                check[now.n+n] = true;
-            }
-            if(now.n * 2 <= y && !check[now.n * 2]) {
-                q.add(new Num(now.n * 2, now.cnt+1));
-                check[now.n * 2] = true;
-            }
-            if(now.n * 3 <= y && !check[now.n * 3]) {
-                q.add(new Num(now.n * 3, now.cnt+1));
-                check[now.n * 3] = true;
-            }
+            q.add(new Num(now.n + n, now.cnt+1));
+            q.add(new Num(now.n * 2, now.cnt+1));
+            q.add(new Num(now.n * 3, now.cnt+1));
         
         }
         
