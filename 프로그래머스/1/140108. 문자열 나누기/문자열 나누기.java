@@ -2,29 +2,25 @@ import java.util.*;
 class Solution {
     public int solution(String s) {
         int answer = 0;
-        char[] alpha = s.toCharArray();
         
-        boolean flag = false;
-        char now = '0';
+        char now = s.charAt(0);
         int cnt = 0;
-        for(int i=0; i<alpha.length; i++){
-            if(!flag) {
-                flag = true;
-                now = alpha[i];
+        
+        for(char c : s.toCharArray()){
+            if(cnt == 0) {
+                now = c;
                 cnt++;
                 continue;
             }
             
-            if(alpha[i] == now) cnt++;
+            if(c == now) cnt++;
             else cnt--;
             
-            if(cnt == 0) {
-                answer++;
-                flag = false;
-            }
+            if(cnt == 0) answer++;
         }
-        cnt = flag == false ? cnt : 1;
+        
+        if(cnt > 0) answer++;
          
-        return answer + cnt;
+        return answer;
     }
 }
