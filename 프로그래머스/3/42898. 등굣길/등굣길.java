@@ -4,8 +4,8 @@ class Solution {
         int[][] value = new int[n][m];
         value[0][0] = 1;
         
-        for(int i=0; i<puddles.length; i++){
-            value[puddles[i][1]-1][puddles[i][0]-1] = -1;
+        for(int[] pudd : puddles){
+            value[pudd[1]-1][pudd[0]-1] = -1;
         }
         
         for(int i=0; i<n; i++){
