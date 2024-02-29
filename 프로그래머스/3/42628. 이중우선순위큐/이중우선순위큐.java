@@ -7,27 +7,41 @@ class Solution {
         
         for(String s : operations){
             String[] oper = s.split(" ");
+            
+            int num = Integer.parseInt(oper[1]);
             if(oper[0].equals("I")){
-                min.add(Integer.parseInt(oper[1]));
-                max.add(Integer.parseInt(oper[1]));
+                max.add(num);
             }
             else{
-                if(!min.isEmpty()){
-                    if(oper[1].equals("-1")) max.remove(min.poll());
-                    else min.remove(max.poll());
+                if(num == -1){
+                    while(!max.isEmpty()){
+                        min.add(max.poll());
+                    }
+                    min.poll();
+                }
+                else{
+                    while(!min.isEmpty()){
+                        max.add(min.poll());
+                    }
+                    max.poll();
                 }
             }
         }
         
-        if(min.isEmpty()){
+        if(min.size() == 0 && max.size() == 0) {
             answer[0] = 0;
             answer[1] = 0;
         }
-        else {
+        else{
+            while(!min.isEmpty()){
+                max.add(min.poll());
+            }
             answer[0] = max.poll();
+            while(!max.isEmpty()){
+                    min.add(max.poll());
+            }
             answer[1] = min.poll();
         }
-        
         return answer;
     }
 }
