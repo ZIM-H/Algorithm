@@ -21,20 +21,18 @@ class Solution {
         
         List<Integer> list = new ArrayList<>();
         visited = new boolean[map.length][map[0].length];
-        int flag = 0;
         for(int i=0; i<map.length; i++){
             for(int j=0; j<map[i].length; j++){
                 if(map[i][j] != 'X' && !visited[i][j]){
                     int n = cal(i,j);
-                    list.add(n);
-                    flag = flag == 0 ? 1 : flag;
+                    if(n != 0) list.add(n);
                 }
             }
         }
         
         int[] answer;
         
-        if(flag == 0){
+        if(list.size() == 0){
             answer = new int[1];
             answer[0] = -1;
         }
