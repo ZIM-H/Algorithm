@@ -4,23 +4,11 @@ class Solution {
         int[] answer = new int[score.length];
         PriorityQueue<Integer> q = new PriorityQueue<>();
         
-        int min = 2001;
         for(int i=0; i<score.length; i++){
-            if(q.size() < k){
-                q.add(score[i]);
-                min = Math.min(min, score[i]);
-                answer[i] = min;
-            }
+            q.add(score[i]);
+            if(q.size() > k) q.poll();
             
-            else{
-                if(score[i] > q.peek()){
-                    q.poll();
-                    q.add(score[i]);
-                    min = q.peek();
-                    answer[i] = min;
-                }
-                else answer[i] = min;
-            }
+            answer[i] = q.peek();
         }
         return answer;
     }
