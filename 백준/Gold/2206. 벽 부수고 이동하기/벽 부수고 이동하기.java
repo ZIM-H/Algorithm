@@ -10,11 +10,8 @@ public class Main {
     static int[] dr = {-1,1,0,0};
     static int[] dc = {0,0,-1,1};
     static class Pos implements Comparable<Pos>{
-        int r;
-        int c;
-        int cnt;
-        boolean check;
-        public Pos(int r, int c, int cnt, boolean check){
+        int r, c, cnt, check;
+        public Pos(int r, int c, int cnt, int check){
             this.r = r;
             this.c = c;
             this.cnt = cnt;
@@ -47,7 +44,7 @@ public class Main {
     static int move(){
         PriorityQueue<Pos> q = new PriorityQueue<Pos>();
         boolean[][][] visited = new boolean[n][m][2];
-        q.add(new Pos(0,0,1,false));
+        q.add(new Pos(0,0,1,0));
         visited[0][0][0] = true;
 
         while(!q.isEmpty()){
@@ -62,26 +59,14 @@ public class Main {
                 int nc = now.c + dc[d];
                 if(nr >= 0 && nc >= 0 && nc < m && nr < n ){
                     // 벽이 아닌 경우
-                    if(map[nr][nc] == 0) {
-                        // 부수고 온 경우 확인
-                        if(now.check) {
-                            if(visited[nr][nc][1]) continue;
-                            q.add(new Pos(nr, nc, now.cnt+1, now.check));
-                            visited[nr][nc][1] = true;
-                        }
-                        // 부수지 않고 온 경우 확인
-                        else {
-                            if (visited[nr][nc][0]) continue;
-                            q.add(new Pos(nr, nc, now.cnt + 1, now.check));
-                            visited[nr][nc][0] = true;
-                        }
+                    if(map[nr][nc] == 0 && !visited[nr][nc][now.check]) {
+                        q.add(new Pos(nr, nc, now.cnt+1, now.check));
+                        visited[nr][nc][now.check] = true;
                     }
                     // 벽인 경우
                     else{
-                        // 부수지 않고 왔다면 부수고 이동
-                        if(!now.check) {
-                            if(visited[nr][nc][0]) continue;
-                            q.add(new Pos(nr, nc, now.cnt+1, true));
+                        if(!visited[nr][nc][0] && now.check == 0) {
+                            q.add(new Pos(nr, nc, now.cnt+1, 1));
                             visited[nr][nc][1] = true;
                         }
                     }
