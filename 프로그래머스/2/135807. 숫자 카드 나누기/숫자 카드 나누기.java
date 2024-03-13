@@ -1,24 +1,23 @@
 import java.util.*;
 class Solution {
-    static List<Integer> factorA, factorB;
+    static int answer;
     public int solution(int[] arrayA, int[] arrayB) {
-        int answer = 0;
-        factorA = new ArrayList<>();
-        Arrays.sort(arrayA);
-        divisor(factorA, arrayA[0]);
-        for(int i : factorA){
-            if(div(i, arrayA, arrayB)) answer = Math.max(answer, i);
-        }
         
-        factorB = new ArrayList<>();
-        Arrays.sort(arrayB);
-        divisor(factorB, arrayB[0]);
-        for(int i : factorB){
-            if(div(i, arrayB, arrayA)) answer = Math.max(answer, i);
-        }
+        check(arrayA, arrayB);
+        check(arrayB, arrayA);
         
         return answer;
     }
+    
+    public void check(int[] a, int[] b){
+        List<Integer> factor = new ArrayList<>();
+        Arrays.sort(a);
+        divisor(factor, a[0]);
+        for(int i : factor){
+            if(div(i, a, b)) answer = Math.max(answer, i);
+        }
+    }
+    
     public boolean div(int num, int[] a, int[] b){
         for(int n : a){
             if(n % num != 0) return false;
