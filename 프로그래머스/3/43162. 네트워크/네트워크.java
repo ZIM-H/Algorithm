@@ -1,32 +1,45 @@
 import java.util.*;
 class Solution {
-    public int solution(int n, int[][] computers) {
-        int answer = 0;
-        boolean[] visited = new boolean[n];
+    static int[] parent;
+    public int find(int x){
+        if(parent[x] == x) return x;
         
-        for(int i=0; i<n; i++){
-            if(!visited[i]){
-                bfs(i, computers, visited);
-                answer++;
-            }
-        }
-        
-        return answer;
+        return find(parent[x]);
     }
     
-    public void bfs(int num, int[][] computers, boolean[] visited){
-        Queue<Integer> q = new ArrayDeque<>();
-        q.add(num);
+    public void union(int a, int b){
+        a = find(a);
+        b = find(b);
         
-        while(!q.isEmpty()){
-            int now = q.poll();
-            visited[now] = true;
-            
-            for(int i=0; i<computers[now].length; i++){
-                if(computers[now][i] == 1 && !visited[i]){
-                    q.add(i);
+        if(a < b) parent[b] = a;
+        else parent[a] = b;
+    }
+    public int solution(int n, int[][] computers) {
+        int answer = 0;
+        
+        parent = new int[n];
+        for(int i=1; i<n; i++){
+            parent[i] = i;
+        }
+        
+        for(int i=0; i<computers.length; i++){
+            for(int j=0; j<computers[0].length; j++){
+                if(i != j && computers[i][j] == 1){
+                    if(find(i) != find(j)){
+                        union(i,j);
+                    }
                 }
             }
         }
+        for(int i=0; i<n; i++){
+            parent[i] = find(i);
+        }
+        
+        Set<Integer> set = new HashSet<>();
+        for(int i : parent){
+            set.add(i);
+        }
+        
+        return set.size();
     }
 }
