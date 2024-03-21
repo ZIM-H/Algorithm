@@ -3,11 +3,7 @@ class Solution {
     static int[] answer;
     public int[] solution(int[][] arr) {
         answer = new int[2];
-        int max = arr.length;
-        
-        compress(arr, max, 0, 0);
-        
-        
+        compress(arr, arr.length, 0, 0);
         return answer;
     }
     
