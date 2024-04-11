@@ -3,17 +3,11 @@ class Solution
     public int solution(int n, int a, int b)
     {
         int answer = 0;
-
-        int seqA = a;
-        int seqB = b;
         
-        while(true){
-            seqA = calSeq(seqA);
-            seqB = calSeq(seqB);
-            if(seqA == seqB) {
-                answer++;
-                break;
-            }
+        while(a != b){
+            a = calSeq(a);
+            b = calSeq(b);
+            
             answer++;
         }
 
