@@ -21,14 +21,14 @@ public class Main {
             b[i] = Integer.parseInt(st.nextToken());
         }
 
-        List<Long> listA = new ArrayList<>();
-        List<Long> listB = new ArrayList<>();
+        Map<Long, Long> mapA = new HashMap<>();
+        Map<Long, Long> mapB = new HashMap<>();
 
         for(int i=1; i<=n; i++){
             long sum = 0;
             for(int j=i; j<=n; j++){
                 sum += a[j];
-                listA.add(sum);
+                mapA.put(sum, mapA.getOrDefault(sum, 0L)+1);
             }
         }
 
@@ -36,41 +36,15 @@ public class Main {
             long sum = 0;
             for(int j=i; j<=m; j++){
                 sum += b[j];
-                listB.add(sum);
+                mapB.put(sum, mapB.getOrDefault(sum, 0L)+1);
             }
         }
 
-        Collections.sort(listA);
-        Collections.sort(listB);
-
-        int left = 0, right = listB.size()-1;
         long answer = 0;
-        while (left < listA.size() && right >= 0){
-            long sum = listA.get(left) + listB.get(right);
-            if(sum == t) {
-                long cntA = 0;
-                long cntB = 0;
-                long valueA = listA.get(left);
-                long valueB = listB.get(right);
-                while (left < listA.size() && listA.get(left) == valueA) {
-                    left++;
-                    cntA++;
-                }
-                while (right >= 0 && listB.get(right) == valueB) {
-                    right--;
-                    cntB++;
-                }
-                answer += cntA * cntB;
-            }
-            else if(sum < t){
-                left++;
-            }
-            else if(sum > t){
-                right--;
-            }
+        for(Long key : mapA.keySet()){
+            if(mapB.containsKey(t - key)) answer += (mapB.get(t-key) * mapA.get(key));
         }
 
         System.out.println(answer);
-
     }
 }
