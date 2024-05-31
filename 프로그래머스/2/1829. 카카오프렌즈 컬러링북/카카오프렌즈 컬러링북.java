@@ -3,7 +3,7 @@ class Solution {
     static boolean[][] visited;
     static int[] dr = {-1,1,0,0};
     static int[] dc = {0,0,-1,1};
-    static class Pos{
+    class Pos{
         int x, y;
         public Pos(int x, int y){
             this.x = x;
@@ -32,20 +32,17 @@ class Solution {
         visited[n][r] = true;
         
         while(!q.isEmpty()){
-            int size = q.size();
-            for(int i=0; i<size; i++){
-                Pos now = q.poll();
+            Pos now = q.poll();
             
-                for(int d = 0; d<4; d++){
-                    int nr = now.x + dr[d];
-                    int nc = now.y + dc[d];
-                    if(nr >= 0 && nc >= 0 && nr < picture.length  && nc < picture[0].length && !visited[nr][nc] && picture[nr][nc] == picture[n][r]){
-                        q.add(new Pos(nr, nc));
-                        visited[nr][nc] = true;
-                        cnt++;
-                    }
-                        
+            for(int d = 0; d<4; d++){
+                int nr = now.x + dr[d];
+                int nc = now.y + dc[d];
+                if(nr >= 0 && nc >= 0 && nr < picture.length  && nc < picture[0].length && !visited[nr][nc] && picture[nr][nc] == picture[n][r]){
+                    q.add(new Pos(nr, nc));
+                    visited[nr][nc] = true;
+                    cnt++;
                 }
+                        
             }
         }
         return cnt;
