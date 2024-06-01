@@ -13,35 +13,27 @@ class Solution {
         }
         if(xcnt > ocnt || ocnt - xcnt > 1) return 0; 
         
-        for(int i=0; i<3; i++){
-            if(map[i][0] == map[i][1] && map[i][1] == map[i][2]) {
-                if(map[i][0] == 'O') oflag = true;
-                else if(map[i][0] == 'X') xflag = true;
-            }
-            
-            if(map[0][i] == map[1][i] && map[1][i] == map[2][i]) {
-                if(map[0][i] == 'O') oflag = true;
-                else if(map[0][i] == 'X') xflag = true;
-            }
+        oflag = checkWin(map, 'O');
+        xflag = checkWin(map, 'X');
+
+        if (xcnt == ocnt) {
+            if ((!oflag && !xflag) || (!oflag && xflag)) return 1;
         }
-        
-        if(map[0][0] == map[1][1] && map[1][1] == map[2][2]) {
-                if(map[0][0] == 'O') oflag = true;
-                else if(map[0][0] == 'X') xflag = true;
+        if (ocnt == xcnt + 1) {
+            if ((!oflag && !xflag) || (oflag && !xflag)) return 1;
         }
-        
-        if (map[0][2] == map[1][1] && map[1][1] == map[2][0]){
-            if(map[0][2] == 'O') oflag = true;
-            else if(map[0][2] == 'X') xflag = true;
-        }
-        
-        if(xcnt == ocnt) {
-            if((!oflag && !xflag) || (!oflag && xflag)) return 1;
-        }
-        if(ocnt == xcnt + 1) {
-            if((!oflag && !xflag) || (oflag && !xflag)) return 1;
-        }
-        
+
         return 0;
+    }
+
+    public boolean checkWin(char[][] map, char player) {
+        for (int i = 0; i < 3; i++) {
+            if (map[i][0] == player && map[i][1] == player && map[i][2] == player) return true;
+            if (map[0][i] == player && map[1][i] == player && map[2][i] == player) return true;
+        }
+        if (map[0][0] == player && map[1][1] == player && map[2][2] == player) return true;
+        if (map[0][2] == player && map[1][1] == player && map[2][0] == player) return true;
+
+        return false;
     }
 }
