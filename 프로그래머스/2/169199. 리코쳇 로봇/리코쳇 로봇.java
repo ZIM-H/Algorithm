@@ -1,16 +1,11 @@
 import java.util.*;
 class Solution {
-    static class Robot implements Comparable<Robot>{
+    static class Robot {
         int r, c, cnt;
         public Robot(int r, int c, int cnt){
             this.r = r;
             this.c = c;
             this.cnt = cnt;
-        }
-        
-        @Override
-        public int compareTo(Robot o){
-            return this.cnt - o.cnt;
         }
     }
     static char[][] map;
@@ -37,7 +32,7 @@ class Solution {
     
     public int bfs(){
         boolean[][] visited = new boolean[row][col];
-        PriorityQueue<Robot> q = new PriorityQueue<>();
+        Queue<Robot> q = new ArrayDeque<>();
         
         visited[start.r][start.c] = true;
         q.add(start);
@@ -48,6 +43,7 @@ class Solution {
             if(now.r == end.r && now.c == end.c){
                 return now.cnt;
             }
+            
             for(int d=0; d<4; d++){
                 int nr = now.r;
                 int nc = now.c;
@@ -57,14 +53,14 @@ class Solution {
                     int cc = nc + dc[d];
                     
                     if(rr < 0 || cc < 0 || rr >= row || cc >= col || map[rr][cc] == 'D') break;
+                    
                     nr = rr;
                     nc = cc;
-                    
                 }
                 
-                if(!visited[nr][nc]) {
+                if(!visited[nr][nc]){
                     visited[nr][nc] = true;
-                    q.add(new Robot(nr, nc, now.cnt + 1));
+                    q.add(new Robot(nr, nc, now.cnt+1));
                 }
             }
         }
