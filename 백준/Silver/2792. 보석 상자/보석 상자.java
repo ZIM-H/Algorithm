@@ -18,26 +18,19 @@ public class Main {
             end = Math.max(end, jewel[i]);
         }
 
-        int mid = 0, count = 0, now = 0, result = 0;
         while(start <= end){
-            mid = (start + end) / 2;
-            count = 0;
+            int mid = (start + end) / 2;
+            int count = 0;
 
-            for(int i=0; i<m; i++){
-                now = jewel[i];
-
-                while (now > 0){
-                    now -= mid;
-                    count++;
-                }
+            for(int j : jewel){
+                count += j/mid;
+                if(j % mid != 0) count++;
             }
 
             if(count > n) start = mid + 1;
-            else {
-                result = mid;
-                end = mid - 1;
-            }
+            else end = mid - 1;
         }
-        System.out.println(result);
+
+        System.out.println(start);
     }
 }
