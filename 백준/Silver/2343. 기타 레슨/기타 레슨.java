@@ -1,7 +1,9 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-class Main {
+public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -14,12 +16,13 @@ class Main {
         int[] lec = new int[n];
         st =  new StringTokenizer(br.readLine());
         for(int i=0; i<n; i++){
-            lec[i] = Integer.parseInt(st.nextToken());   
+            lec[i] = Integer.parseInt(st.nextToken());
             start = Math.max(start, lec[i]);
             end += lec[i];
         }
 
         int mid = 0, count = 0, sum = 0;
+        int result = 0;
         while(start <= end){
             mid = (start + end) / 2;
             count = 0;
@@ -37,7 +40,10 @@ class Main {
             // 남아있는 강의 count에 추가
             if(count > 0) count++;
 
-            if(count > m) start = mid + 1;
+            if(count > m) {
+                start = mid + 1;
+                result = mid;
+            }
             else end = mid - 1;
 
         }
