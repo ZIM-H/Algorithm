@@ -44,13 +44,15 @@ public class Main {
             dijkstra(i, fast);
         }
 
+        StringBuilder sb = new StringBuilder();
         for(int i=1; i<=n; i++){
             for(int j=1; j<=n; j++){
-                if(fast[i][j]==0) System.out.print('-'+" ");
-                else System.out.print(fast[i][j] +" ");
+                if(fast[i][j]==0) sb.append("-").append(" ");
+                else sb.append(fast[i][j]).append(" ");
             }
-            System.out.println();
+            sb.append("\n");
         }
+        System.out.println(sb);
     }
 
     public static void dijkstra(int start, int[][] fast){
