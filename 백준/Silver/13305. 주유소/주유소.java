@@ -18,23 +18,13 @@ class Main {
         for(int i=0; i<n; i++){
             cost[i] = Integer.parseInt(st.nextToken());
         }
-        cost[n-1] = 1000000001;
 
-        int idx = 0, cnt = 0, tmp = 0;
+        long minCost = cost[0];
         long total = 0;
-
-        while(true){
-            tmp = idx + 1;
-            cnt = dis[idx];
-            while(cost[idx] <= cost[tmp]){
-                cnt += dis[tmp];
-                tmp++;
-                if(tmp == n-1) break;
-            }
-
-            total += cost[idx] * cnt;
-            idx = tmp;
-            if(idx == n-1) break;
+        
+        for(int i=0; i<n-1; i++){
+            minCost = Math.min(minCost, cost[i]);
+            total += minCost * dis[i];
         }
 
         System.out.println(total);
