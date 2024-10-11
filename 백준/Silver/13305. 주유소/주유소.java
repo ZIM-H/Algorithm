@@ -6,36 +6,35 @@ class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
 
-        int[] dis = new int[n+1];
-        int[] cost = new int[n+1];
+        int[] dis = new int[n];
+        int[] cost = new int[n];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for(int i=1; i<=n-1; i++){
+        for(int i=0; i<n-1; i++){
             dis[i] = Integer.parseInt(st.nextToken());
         }
 
         st = new StringTokenizer(br.readLine());
-        for(int i=1; i<=n; i++){
+        for(int i=0; i<n; i++){
             cost[i] = Integer.parseInt(st.nextToken());
         }
-        cost[0] = 1000000001;
+        cost[n-1] = 1000000001;
 
-        int idx = n-1, cnt = 1;
-        long total = 0, tmpDis = 0;
+        int idx = 0, cnt = 0, tmp = 0;
+        long total = 0;
 
         while(true){
-            if(cost[idx] >= cost[idx-1]) {
-                cnt++;
-                tmpDis += dis[idx];
+            tmp = idx + 1;
+            cnt = dis[idx];
+            while(cost[idx] <= cost[tmp]){
+                cnt += dis[tmp];
+                tmp++;
+                if(tmp == n-1) break;
             }
-            else{
-                tmpDis += dis[idx];
-                total += cost[idx] * tmpDis;
-                cnt = 1;
-                tmpDis = 0;
-            }
-            idx--;
-            if(idx == 0) break;
+
+            total += cost[idx] * cnt;
+            idx = tmp;
+            if(idx == n-1) break;
         }
 
         System.out.println(total);
