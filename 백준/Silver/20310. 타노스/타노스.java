@@ -7,22 +7,35 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String s = br.readLine();
         int zeroCnt = 0, oneCnt = 0;
-        for(char c : s.toCharArray()){
-            if(c == '0') zeroCnt++;
+        char[] c = s.toCharArray();
+
+        for(int i=0; i<c.length; i++){
+            if(c[i] == '0') zeroCnt++;
             else oneCnt++;
         }
 
-        StringBuilder sb = new StringBuilder();
-        if(zeroCnt != 0){
-            for(int i=0; i<zeroCnt/2; i++){
-                sb.append(0);
+        // 0 지우기
+        zeroCnt /= 2;
+        oneCnt /= 2;
+        for(int i=c.length-1; i>=0; i--){
+            if(c[i] == '0') {
+                c[i] = '.';
+                zeroCnt--;
+                if(zeroCnt == 0) break;
+            }
+        }
+        for(int i=0; i<c.length; i++){
+            if(c[i] == '1') {
+                c[i] = '.';
+                oneCnt--;
+                if(oneCnt == 0) break;
             }
         }
 
-        if(oneCnt != 0){
-            for(int i=0; i<oneCnt/2; i++){
-                sb.append(1);
-            }
+        StringBuilder sb = new StringBuilder();
+        for(char ch : c){
+            if(ch == '.') continue;
+            sb.append(ch);
         }
 
         System.out.println(sb.toString());
