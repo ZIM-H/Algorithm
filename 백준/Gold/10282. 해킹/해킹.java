@@ -44,26 +44,28 @@ public class Main {
 
             PriorityQueue<Node> q = new PriorityQueue<>();
             q.add(new Node(c, 0));
+            int cnt = 0, max = 0;
+            boolean[] visited = new boolean[n+1];
 
             while (!q.isEmpty()){
                 Node now = q.poll();
+                if(visited[now.n]) continue;
+
+                visited[now.n] = true;
+                max = now.cost;
+                cnt++;
 
                 for(Node next : graph[now.n]){
-                    if(dist[next.n] > dist[now.n]+next.cost){
-                        dist[next.n] = dist[now.n]+next.cost;
-                        q.add(new Node(next.n, dist[next.n]));
+                    if(!visited[next.n]){
+                        if(dist[next.n] > dist[now.n]+next.cost){
+                            dist[next.n] = dist[now.n]+next.cost;
+                            q.add(new Node(next.n, dist[next.n]));
+                        }
                     }
                 }
             }
-            int cnt = 0, max = 0;
-            for(int i : dist){
-                if(i != 987654321) {
-                    cnt++;
-                    max = Math.max(max, i);
-                }
-            }
-            System.out.println(cnt+" "+max);
 
+            System.out.println(cnt+" "+max);
         }
 
 
